@@ -1,0 +1,119 @@
+/* ==================== CUSTOM CSS - CV. SRIWIJAYA SERANGKAI ==================== */
+
+:root {
+    --navy:        #0A1628;
+    --navy-mid:    #112240;
+    --blue:        #1E4D8C;
+    --accent:      #E8A020;
+    --accent-lt:   #F5C55A;
+    --white:       #FAFAF8;
+    --gray-soft:   #F2F1EE;
+    --gray-mid:    #7A7A8A;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans:  'DM Sans', system-ui, sans-serif;
+}
+
+body {
+    font-family: var(--sans);
+    background: var(--white);
+    color: var(--navy);
+    overflow-x: hidden;
+}
+
+/* Navbar */
+.ss-nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 200;
+    height: 70px;
+    padding: 0 5vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(10,22,40,0.97);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.06);
+    transition: all 0.4s;
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+}
+
+.nav-mark {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--navy);
+}
+
+.nav-name {
+    font-family: var(--serif);
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+}
+
+.nav-name small {
+    display: block;
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* Hero */
+.hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    background: var(--navy);
+    overflow: hidden;
+}
+
+.hero-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('{{ asset("assets/images/gedung.jpg") }}');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.22;
+}
+
+/* Buttons */
+.btn-gold {
+    background: var(--accent);
+    color: var(--navy);
+    padding: 14px 30px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(232,160,32,.35);
+    transition: all .25s;
+}
+
+.btn-gold:hover {
+    background: var(--accent-lt);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(232,160,32,.45);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .nav-links, .nav-btn { display: none; }
+    .nav-toggle { display: block; }
+}
