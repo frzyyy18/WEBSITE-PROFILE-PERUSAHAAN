@@ -79,7 +79,7 @@ class JobApplicationController extends Controller
         if ($request->hasFile('iq_test_file')) {
             // Hapus file lama jika ada
             if ($application->iq_test_file) {
-                Storage::disk('public')->delete($application->iq_test_file);
+                Storage::disk('public_direct')->delete($application->iq_test_file);
             }
             $updateData['iq_test_file'] = $request->file('iq_test_file')
                 ->store('soal/iq', 'public');
@@ -89,7 +89,7 @@ class JobApplicationController extends Controller
         if ($request->hasFile('disc_test_file')) {
             // Hapus file lama jika ada
             if ($application->disc_test_file) {
-                Storage::disk('public')->delete($application->disc_test_file);
+                Storage::disk('public_direct')->delete($application->disc_test_file);
             }
             $updateData['disc_test_file'] = $request->file('disc_test_file')
                 ->store('soal/disc', 'public');
@@ -189,10 +189,10 @@ class JobApplicationController extends Controller
     {
         // Hapus file jawaban lama dari storage
         if ($application->answer_iq_file) {
-            Storage::disk('public')->delete($application->answer_iq_file);
+            Storage::disk('public_direct')->delete($application->answer_iq_file);
         }
         if ($application->answer_disc_file) {
-            Storage::disk('public')->delete($application->answer_disc_file);
+            Storage::disk('public_direct')->delete($application->answer_disc_file);
         }
 
         $application->update([
@@ -214,7 +214,7 @@ class JobApplicationController extends Controller
         // Hapus semua file terkait
         foreach (['cv_path','iq_test_file','disc_test_file','answer_iq_file','answer_disc_file'] as $field) {
             if ($application->$field) {
-                Storage::disk('public')->delete($application->$field);
+                Storage::disk('public_direct')->delete($application->$field);
             }
         }
 

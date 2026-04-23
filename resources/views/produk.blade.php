@@ -252,19 +252,19 @@
         </div>
 
         @php
-        $products = [
-            ['img' => 'dove.png',         'name' => 'Dove',          'cat' => 'Personal Care', 'desc' => 'Sabun mandi, shampoo, dan body care dengan kelembapan tinggi'],
-            ['img' => 'lifebuoy.png',      'name' => 'Lifebuoy',      'cat' => 'Personal Care', 'desc' => 'Sabun mandi antibakteri dengan perlindungan 99.9% kuman'],
-            ['img' => 'rinso.png',         'name' => 'Rinso',         'cat' => 'Home Care',     'desc' => 'Deterjen dengan kekuatan membersihkan noda yang sangat baik'],
-            ['img' => 'pepsodent.png',     'name' => 'Pepsodent',     'cat' => 'Oral Care',     'desc' => 'Pasta gigi dengan perlindungan gigi berlubang dan napas segar'],
-            ['img' => 'sunlight.png',      'name' => 'Sunlight',      'cat' => 'Home Care',     'desc' => 'Sabun cuci piring dengan kekuatan membersihkan lemak maksimal'],
-            ['img' => 'axe.png',           'name' => 'Axe',           'cat' => 'Personal Care', 'desc' => 'Body spray & deodorant pria dengan aroma maskulin'],
-            ['img' => 'bango.png',         'name' => 'Bango',         'cat' => 'Foods',         'desc' => 'Kecap manis premium dari kedelai pilihan'],
-            ['img' => 'buavita.png',       'name' => 'Buavita',       'cat' => 'Beverages',     'desc' => 'Minuman buah segar dengan nutrisi lengkap'],
-            ['img' => 'clear.png',         'name' => 'Clear',         'cat' => 'Hair Care',     'desc' => 'Sampo anti-ketombe nomor satu di Indonesia'],
-            ['img' => 'glow & lovely.png',   'name' => 'Glow & Lovely', 'cat' => 'Skin Care',     'desc' => 'Perawatan kulit dengan multivitamin dan glow serum'],
-            ['img' => 'closeup.png',       'name' => 'Closeup',       'cat' => 'Oral Care',     'desc' => 'Pasta gigi dengan perlindungan napas segar hingga 12 jam'],
-            ['img' => 'wipol.png',         'name' => 'Wipol',         'cat' => 'Home Care',     'desc' => 'Pembersih lantai dengan aroma cemara yang segar'],
+            $products = [
+            ['img' => 'DOVE.png',          'name' => 'Dove',          ...],
+            ['img' => 'LIFEBUOY.png',      'name' => 'Lifebuoy',      ...],
+            ['img' => 'RINSO.png',         'name' => 'Rinso',         ...],
+            ['img' => 'PEPSODENT.png',     'name' => 'Pepsodent',     ...],
+            ['img' => 'SUNLIGHT.png',      'name' => 'Sunlight',      ...],
+            ['img' => 'AXE.png',           'name' => 'Axe',           ...],
+            ['img' => 'BANGO.png',         'name' => 'Bango',         ...],
+            ['img' => 'BUAVITA.png',       'name' => 'Buavita',       ...],
+            ['img' => 'CLEAR.png',         'name' => 'Clear',         ...],
+            ['img' => 'GLOW & LOVELY.png', 'name' => 'Glow & Lovely', ...],
+            ['img' => 'CLOSEUP.png',       'name' => 'Closeup',       ...],
+            ['img' => 'WIPOL.png',         'name' => 'Wipol',         ...],
         ];
 
         $catBadge = [

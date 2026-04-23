@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Job;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use App\Models\JobApplication;
+use Illuminate\Support\Facades\Storage;
 
 class JobAdminController extends Controller
 {
@@ -118,10 +120,10 @@ public function uploadTest(Request $request, JobApplication $application)
 
     // Hapus file lama jika ada
     if ($application->test_file) {
-        Storage::disk('public')->delete($application->test_file);
+        Storage::disk('public_direct')->delete($application->test_file);
     }
 
-    $path = $request->file('test_file')->store('test_soal', 'public');
+    $path = $request->file('test_file')->store('test_soal', 'public_direct');
 
     $application->update([
         'test_file' => $path,
