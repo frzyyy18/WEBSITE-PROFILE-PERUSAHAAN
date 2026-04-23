@@ -4,17 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Job;
-use App\Models\JobApplication;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class JobAdminController extends Controller
 {
-    // Constructor tidak perlu middleware lagi karena sudah diproteksi di route
     public function index()
     {
         $jobs = Job::latest()->get();
-        $applications = JobApplication::with('job')->latest()->get();
+        $applications = \App\Models\JobApplication::with('job')->latest()->get();
 
         return view('admin.jobs.index', compact('jobs', 'applications'));
     }
@@ -35,9 +33,19 @@ class JobAdminController extends Controller
             'deadline'     => 'required|date',
         ]);
 
+        // Buat slug yang unik
+        $baseSlug = Str::slug($request->title);
+        $slug = $baseSlug;
+        $counter = 1;
+
+        while (Job::where('slug', $slug)->exists()) {
+            $slug = $baseSlug . '-' . $counter;
+            $counter++;
+        }
+
         Job::create([
             'title'        => $request->title,
-            'slug'         => Str::slug($request->title) . '-' . time(),
+            'slug'         => $slug,
             'description'  => $request->description,
             'requirements' => $request->requirements,
             'location'     => $request->location,
@@ -67,9 +75,19 @@ class JobAdminController extends Controller
             'is_active'    => 'boolean',
         ]);
 
+        // Buat slug unik saat update
+        $baseSlug = Str::slug($request->title);
+        $slug = $baseSlug;
+        $counter = 1;
+
+        while (Job::where('slug', $slug)->where('id', '!=', $job->id)->exists()) {
+            $slug = $baseSlug . '-' . $counter;
+            $counter++;
+        }
+
         $job->update([
             'title'        => $request->title,
-            'slug'         => Str::slug($request->title) . '-' . time(),
+            'slug'         => $slug,
             'description'  => $request->description,
             'requirements' => $request->requirements,
             'location'     => $request->location,
@@ -88,4 +106,45 @@ class JobAdminController extends Controller
         return redirect()->route('admin.jobs.index')
                          ->with('success', 'Lowongan berhasil dihapus!');
     }
+
+  /**
+ * Upload PDF Soal oleh HRD
+ */
+public function uploadTest(Request $request, JobApplication $application)
+{
+    $request->validate([
+        'test_file' => 'required|file|mimes:pdf|max:20480',
+    ]);
+
+    // Hapus file lama jika ada
+    if ($application->test_file) {
+        Storage::disk('public')->delete($application->test_file);
+    }
+
+    $path = $request->file('test_file')->store('test_soal', 'public');
+
+    $application->update([
+        'test_file' => $path,
+        'test_duration' => $request->test_duration ?? 60,
+    ]);
+
+    return redirect()->route('admin.job-applications.show', $application)
+                     ->with('success', 'File soal PDF berhasil diupload!');
+}
+
+/**
+ * Pelamar mulai mengerjakan test
+ */
+public function startTest(JobApplication $application)
+{
+    if (!$application->test_file) {
+        return redirect()->back()->with('error', 'Soal belum diupload oleh HRD.');
+    }
+
+    $application->update([
+        'test_started_at' => now(),
+    ]);
+
+    return redirect()->route('applicant.test', $application->id);
+}
 }

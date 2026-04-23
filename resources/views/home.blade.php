@@ -1,230 +1,415 @@
 @extends('layouts.app')
-
+ 
 @section('title', 'CV. Sriwijaya Serangkai - Distributor Resmi Unilever')
-
+ 
+@push('styles')
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap');
+ 
+    :root {
+        --gold: #C9A84C;
+        --gold-light: #E8C97A;
+        --gold-pale: #FBF3E0;
+        --navy: #0D1B2A;
+        --navy-mid: #1B2E45;
+        --cream: #FDFAF4;
+    }
+ 
+    body { font-family: 'DM Sans', sans-serif; }
+ 
+    /* ===== HERO ===== */
+    .home-hero {
+        position: relative; min-height: 100vh;
+        display: flex; align-items: center; overflow: hidden;
+    }
+    .hero-bg {
+        position: absolute; inset: 0;
+        background-size: cover; background-position: center; background-attachment: fixed;
+    }
+    .hero-overlay {
+        position: absolute; inset: 0;
+        background: linear-gradient(135deg, rgba(13,27,42,0.88) 0%, rgba(13,27,42,0.65) 50%, rgba(27,46,69,0.80) 100%);
+    }
+    .hero-glow-1 { position: absolute; top: 15%; right: 10%; width: 400px; height: 400px; background: rgba(201,168,76,0.06); border-radius: 50%; filter: blur(80px); }
+    .hero-glow-2 { position: absolute; bottom: 15%; left: 5%; width: 500px; height: 500px; background: rgba(201,168,76,0.04); border-radius: 50%; filter: blur(100px); }
+ 
+    .hero-inner {
+        position: relative; z-index: 10;
+        max-width: 900px; margin: 0 auto;
+        padding: 120px 24px 80px; text-align: center;
+    }
+ 
+    .hero-pill {
+        display: inline-flex; align-items: center; gap: 8px;
+        background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.35);
+        color: var(--gold-light); border-radius: 100px;
+        padding: 7px 20px; font-size: 0.78rem; font-weight: 500;
+        letter-spacing: 0.05em; margin-bottom: 28px;
+    }
+    .hero-pill span { width: 7px; height: 7px; background: #4ade80; border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.6;transform:scale(1.3)} }
+ 
+    .hero-title {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(2.8rem, 8vw, 6rem);
+        font-weight: 900; color: white;
+        line-height: 1.05; margin-bottom: 20px;
+        letter-spacing: -0.02em;
+    }
+    .hero-title span { color: var(--gold-light); font-style: italic; }
+ 
+    .hero-desc {
+        color: rgba(255,255,255,0.6); font-size: 1rem;
+        max-width: 560px; margin: 0 auto 40px; line-height: 1.8;
+    }
+    .hero-desc strong { color: rgba(255,255,255,0.9); font-weight: 600; }
+ 
+    .hero-btns { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin-bottom: 56px; }
+ 
+    .btn-primary {
+        display: inline-flex; align-items: center; gap: 8px;
+        background: var(--gold); color: var(--navy);
+        font-weight: 700; font-size: 0.9rem;
+        padding: 14px 32px; border-radius: 100px;
+        text-decoration: none; transition: all 0.25s;
+        box-shadow: 0 4px 24px rgba(201,168,76,0.35);
+    }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(201,168,76,0.45); }
+ 
+    .btn-outline {
+        display: inline-flex; align-items: center; gap: 8px;
+        border: 1.5px solid rgba(255,255,255,0.35); color: white;
+        font-weight: 600; font-size: 0.9rem;
+        padding: 14px 32px; border-radius: 100px;
+        text-decoration: none; transition: all 0.25s;
+        backdrop-filter: blur(8px);
+    }
+    .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.6); }
+ 
+    .hero-stats {
+        display: grid; grid-template-columns: repeat(3, 1fr);
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.08);
+        backdrop-filter: blur(12px);
+        border-radius: 20px; padding: 24px 32px;
+        max-width: 520px; margin: 0 auto;
+    }
+    .hero-stat { text-align: center; }
+    .hero-stat + .hero-stat { border-left: 1px solid rgba(255,255,255,0.08); }
+    .hero-stat-num { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; color: white; line-height: 1; }
+    .hero-stat-num span { color: var(--gold); }
+    .hero-stat-lbl { font-size: 0.7rem; color: rgba(255,255,255,0.45); margin-top: 4px; }
+ 
+    .hero-scroll {
+        position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+        display: flex; flex-direction: column; align-items: center; gap: 6px;
+        color: rgba(255,255,255,0.35); font-size: 0.65rem; letter-spacing: 3px;
+        text-transform: uppercase; animation: bounce 2s infinite;
+    }
+    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(6px)} }
+ 
+    /* ===== TENTANG ===== */
+    .tentang-section { background: white; padding: 96px 24px; }
+    .tentang-inner { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+ 
+    .section-eyebrow { font-size: 0.7rem; font-weight: 600; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 900; color: var(--navy); line-height: 1.2; margin-bottom: 16px; }
+    .section-divider { width: 48px; height: 3px; background: linear-gradient(to right, var(--gold), rgba(201,168,76,0.3)); border-radius: 2px; margin-bottom: 20px; }
+    .section-desc { color: #666; line-height: 1.85; font-size: 0.95rem; margin-bottom: 24px; }
+ 
+    .check-list { list-style: none; padding: 0; margin: 0 0 28px; }
+    .check-list li { display: flex; align-items: center; gap: 12px; color: #555; font-size: 0.9rem; padding: 6px 0; }
+    .check-icon { width: 22px; height: 22px; border-radius: 50%; background: var(--gold); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; flex-shrink: 0; }
+ 
+    .link-more { display: inline-flex; align-items: center; gap: 8px; color: var(--gold); font-weight: 600; font-size: 0.9rem; text-decoration: none; transition: gap 0.2s; }
+    .link-more:hover { gap: 14px; }
+ 
+    .tentang-img-wrap { position: relative; }
+    .tentang-img {
+        border-radius: 24px; overflow: hidden;
+        height: 460px; background: #f0ece4; position: relative;
+    }
+    .tentang-img img { width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.5s; }
+    .tentang-img img.loaded { opacity: 1; }
+    .tentang-badge {
+        position: absolute; bottom: -20px; left: -20px;
+        background: white; border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+        padding: 16px 20px; display: flex; align-items: center; gap: 14px;
+    }
+    .tentang-badge-icon { width: 44px; height: 44px; background: var(--gold-pale); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 1.2rem; }
+    .tentang-badge-title { font-size: 0.8rem; font-weight: 700; color: var(--navy); }
+    .tentang-badge-sub { font-size: 0.7rem; color: #888; }
+ 
+    /* ===== KEUNGGULAN ===== */
+    .unggulan-section { background: var(--cream); padding: 80px 24px; }
+    .unggulan-inner { max-width: 1000px; margin: 0 auto; }
+    .unggulan-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 40px; }
+    .unggulan-card {
+        background: white; border-radius: 20px;
+        border: 1.5px solid rgba(201,168,76,0.1);
+        padding: 28px 22px; transition: all 0.25s;
+        box-shadow: 0 3px 16px rgba(0,0,0,0.05);
+    }
+    .unggulan-card:hover { transform: translateY(-4px); border-color: rgba(201,168,76,0.4); box-shadow: 0 12px 36px rgba(201,168,76,0.12); }
+    .unggulan-icon { width: 52px; height: 52px; border-radius: 14px; background: var(--gold-pale); color: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 16px; }
+    .unggulan-title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+    .unggulan-desc { font-size: 0.82rem; color: #777; line-height: 1.7; }
+ 
+    /* ===== CABANG ===== */
+    .cabang-section { background: white; padding: 80px 24px; }
+    .cabang-inner { max-width: 900px; margin: 0 auto; }
+    .cabang-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 40px; }
+    .cabang-card {
+        background: white; border-radius: 20px; overflow: hidden;
+        border: 1.5px solid rgba(201,168,76,0.12);
+        box-shadow: 0 3px 20px rgba(0,0,0,0.06);
+        transition: all 0.25s;
+    }
+    .cabang-card:hover { transform: translateY(-4px); box-shadow: 0 14px 40px rgba(201,168,76,0.15); border-color: rgba(201,168,76,0.35); }
+    .cabang-img { position: relative; height: 200px; overflow: hidden; background: #f0ece4; }
+    .cabang-img img { width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: all 0.5s; }
+    .cabang-img img.loaded { opacity: 1; }
+    .cabang-card:hover .cabang-img img { transform: scale(1.05); }
+    .cabang-img-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(13,27,42,0.4), transparent); }
+    .cabang-hq { position: absolute; top: 12px; right: 12px; background: var(--gold); color: white; font-size: 0.65rem; font-weight: 700; padding: 3px 10px; border-radius: 100px; }
+    .cabang-body { padding: 22px; }
+    .cabang-name { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+    .cabang-addr { font-size: 0.8rem; color: #777; line-height: 1.65; margin-bottom: 12px; }
+    .cabang-phone { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--gold); font-weight: 600; }
+ 
+    /* ===== KEGIATAN ===== */
+    .kegiatan-section { background: var(--cream); padding: 80px 24px; }
+    .kegiatan-inner { max-width: 1100px; margin: 0 auto; }
+ 
+    /* Filter tabs style konsisten */
+    .kegiatan-filter { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 32px 0; }
+    .kfbtn {
+        padding: 7px 18px; border-radius: 100px; font-size: 0.8rem; font-weight: 500;
+        border: 1.5px solid rgba(201,168,76,0.2); background: white; color: #555;
+        cursor: pointer; transition: all 0.2s;
+    }
+    .kfbtn:hover { border-color: var(--gold); color: var(--navy); }
+    .kfbtn.active { background: var(--navy); color: white; border-color: var(--navy); }
+ 
+    /* Card kegiatan */
+    .kegiatan-card {
+        background: white; border-radius: 20px; overflow: hidden;
+        border: 1.5px solid rgba(201,168,76,0.1);
+        box-shadow: 0 3px 16px rgba(0,0,0,0.05);
+        transition: all 0.25s;
+    }
+    .kegiatan-card:hover { transform: translateY(-4px); box-shadow: 0 14px 40px rgba(201,168,76,0.14); border-color: rgba(201,168,76,0.3); }
+ 
+    .kegiatan-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+ 
+    /* ===== CTA ===== */
+    .cta-section {
+        background: var(--navy); padding: 80px 24px;
+        text-align: center; position: relative; overflow: hidden;
+    }
+    .cta-section::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(201,168,76,0.08) 0%, transparent 65%); }
+    .cta-inner { max-width: 600px; margin: 0 auto; position: relative; z-index: 1; }
+    .cta-eyebrow { font-size: 0.7rem; font-weight: 600; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+    .cta-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 900; color: white; margin-bottom: 12px; line-height: 1.2; }
+    .cta-title span { color: var(--gold-light); font-style: italic; }
+    .cta-desc { color: rgba(255,255,255,0.5); font-size: 0.9rem; margin-bottom: 12px; line-height: 1.7; }
+    .cta-contacts { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-bottom: 32px; font-size: 0.82rem; color: rgba(255,255,255,0.5); }
+    .cta-contact-item { display: flex; align-items: center; gap: 6px; }
+    .cta-contact-item i { color: var(--gold); }
+    .cta-btns { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+    .btn-wa { display: inline-flex; align-items: center; gap: 8px; background: #22c55e; color: white; font-weight: 700; font-size: 0.9rem; padding: 14px 30px; border-radius: 100px; text-decoration: none; transition: all 0.2s; box-shadow: 0 4px 20px rgba(34,197,94,0.3); }
+    .btn-wa:hover { background: #16a34a; transform: translateY(-2px); }
+    .btn-catalog { display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid rgba(255,255,255,0.25); color: white; font-weight: 600; font-size: 0.9rem; padding: 14px 30px; border-radius: 100px; text-decoration: none; transition: all 0.2s; }
+    .btn-catalog:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.5); }
+ 
+    @media (max-width: 768px) {
+        .tentang-inner { grid-template-columns: 1fr; }
+        .unggulan-grid { grid-template-columns: 1fr; }
+        .cabang-grid { grid-template-columns: 1fr; }
+        .kegiatan-grid { grid-template-columns: 1fr; }
+        .hero-stats { grid-template-columns: 1fr; gap: 16px; }
+        .hero-stat + .hero-stat { border-left: none; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 16px; }
+    }
+    @media (max-width: 1024px) {
+        .kegiatan-grid { grid-template-columns: repeat(2, 1fr); }
+        .unggulan-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+</style>
+@endpush
+ 
 @section('content')
-
+ 
 {{-- ===== HERO ===== --}}
-<section class="relative min-h-screen flex items-center overflow-hidden">
-    <div class="absolute inset-0 bg-cover bg-center bg-fixed"
-         style="background-image: url('{{ asset('assets/images/gedung.jpeg') }}');"></div>
-    <div class="absolute inset-0 bg-gradient-to-br from-blue-950/80 via-black/60 to-blue-900/70"></div>
-
-    <div class="absolute top-20 right-20 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl"></div>
-    <div class="absolute bottom-20 left-10 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl"></div>
-
-    <div class="relative max-w-7xl mx-auto px-6 text-center z-10 pt-24 pb-32">
-        <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 px-5 py-2 rounded-full mb-8 text-sm font-medium text-white">
-            <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
-            Distributor Resmi Unilever
+<section class="home-hero">
+    <div class="hero-bg" style="background-image: url('{{ asset('assets/images/gedung.jpeg') }}');"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-glow-1"></div>
+    <div class="hero-glow-2"></div>
+ 
+    <div class="hero-inner">
+        <div class="hero-pill">
+            <span></span> Distributor Resmi Unilever
         </div>
-
-        <h1 class="text-5xl md:text-7xl lg:text-8xl font-extrabold leading-none mb-6 text-white tracking-tight">
-            CV. Sriwijaya<br>
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-amber-500">Serangkai</span>
+ 
+        <h1 class="hero-title">
+            CV. Sriwijaya<br><span>Serangkai</span>
         </h1>
-
-        <p class="text-lg md:text-xl text-blue-100/90 max-w-2xl mx-auto mb-12 leading-relaxed">
-            Menyalurkan kualitas terbaik Unilever sejak <strong class="text-white">14 Februari 2012</strong>
-            untuk seluruh wilayah Palembang dan Sumatera Selatan.
+ 
+        <p class="hero-desc">
+            Menyalurkan kualitas terbaik Unilever sejak
+            <strong>14 Februari 2012</strong> untuk seluruh wilayah Palembang dan Sumatera Selatan.
         </p>
-
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/produk"
-               class="group bg-white text-blue-900 hover:bg-amber-400 hover:text-white font-bold text-base px-10 py-4 rounded-2xl shadow-2xl transition-all duration-300 flex items-center justify-center gap-2">
-                <span>Lihat Produk Kami</span>
-                <span class="group-hover:translate-x-1 transition-transform">→</span>
+ 
+        <div class="hero-btns">
+            <a href="/produk" class="btn-primary">
+                <i class="fas fa-box-open"></i> Lihat Produk Kami
             </a>
-            <a href="/lowongan"
-               class="border-2 border-white/70 text-white hover:bg-white hover:text-blue-900 font-bold text-base px-10 py-4 rounded-2xl transition-all duration-300 backdrop-blur-sm">
-                Lowongan Kerja
+            <a href="/lowongan" class="btn-outline">
+                <i class="fas fa-briefcase"></i> Lowongan Kerja
             </a>
         </div>
-
-        <div class="mt-20 grid grid-cols-3 gap-6 max-w-2xl mx-auto border border-white/10 bg-white/5 backdrop-blur-md rounded-3xl px-8 py-6">
-            <div>
-                <div class="text-3xl font-extrabold text-white">13+</div>
-                <div class="text-xs text-blue-200 mt-1">Tahun Berpengalaman</div>
+ 
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <div class="hero-stat-num">20<span>+</span></div>
+                <div class="hero-stat-lbl">Tahun Berpengalaman</div>
             </div>
-            <div class="border-x border-white/10">
-                <div class="text-3xl font-extrabold text-white">500+</div>
-                <div class="text-xs text-blue-200 mt-1">Mitra Aktif</div>
+            <div class="hero-stat">
+                <div class="hero-stat-num">500<span>+</span></div>
+                <div class="hero-stat-lbl">Mitra Aktif</div>
             </div>
-            <div>
-                <div class="text-3xl font-extrabold text-white">3</div>
-                <div class="text-xs text-blue-200 mt-1">Cabang Operasional</div>
+            <div class="hero-stat">
+                <div class="hero-stat-num">7<span>+</span></div>
+                <div class="hero-stat-lbl">Cabang Operasional</div>
             </div>
         </div>
     </div>
-
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/50 flex flex-col items-center gap-2 animate-bounce">
-        <span class="text-[10px] tracking-widest uppercase">Scroll</span>
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-        </svg>
+ 
+    <div class="hero-scroll">
+        <span>Scroll</span>
+        <i class="fas fa-chevron-down" style="font-size:0.7rem;"></i>
     </div>
 </section>
 
 
 {{-- ===== TENTANG KAMI ===== --}}
-<section class="py-28 bg-white">
-    <div class="max-w-7xl mx-auto px-6">
-        <div class="grid md:grid-cols-2 gap-20 items-center">
-            <div>
-                <span class="inline-block bg-blue-50 text-blue-700 text-sm font-semibold px-5 py-2 rounded-full mb-6">
-                    Sejak 2012
-                </span>
-                <h2 class="text-4xl lg:text-5xl font-extrabold text-gray-900 leading-tight mb-6">
-                    Distributor Unilever<br>yang Terpercaya
-                </h2>
-                <p class="text-gray-500 text-base leading-relaxed mb-8">
-                    CV. Sriwijaya Serangkai berdiri sejak <strong class="text-gray-700">14 Februari 2012</strong> sebagai
-                    distributor resmi produk Unilever di wilayah Palembang dan Sumatera Selatan.
-                    Kami berkomitmen memberikan pelayanan terbaik, distribusi cepat, dan produk berkualitas tinggi
-                    kepada seluruh mitra bisnis kami.
-                </p>
-
-                <ul class="space-y-3 mb-10">
-                    @foreach(['Distributor resmi & bersertifikat Unilever', 'Jangkauan distribusi seluruh Sumsel', 'Tim profesional berpengalaman', 'Armada pengiriman lengkap'] as $point)
-                    <li class="flex items-center gap-3 text-gray-600">
-                        <span class="w-5 h-5 bg-emerald-500 text-white rounded-full flex items-center justify-center flex-shrink-0 text-xs">✓</span>
-                        {{ $point }}
-                    </li>
-                    @endforeach
-                </ul>
-
-                <a href="/visi-misi"
-                   class="inline-flex items-center gap-2 text-blue-600 font-semibold hover:gap-4 transition-all duration-300">
-                    Baca Visi &amp; Misi Kami <span class="text-xl">→</span>
-                </a>
+<section class="tentang-section">
+    <div class="tentang-inner">
+        <div>
+            <p class="section-eyebrow">Sejak 2012</p>
+            <h2 class="section-title">Distributor Unilever yang Terpercaya</h2>
+            <div class="section-divider"></div>
+            <p class="section-desc">
+                CV. Sriwijaya Serangkai berdiri sejak <strong style="color:var(--navy);">14 Februari 2012</strong> sebagai
+                distributor resmi produk Unilever di wilayah Palembang dan Sumatera Selatan.
+                Kami berkomitmen memberikan pelayanan terbaik, distribusi cepat, dan produk berkualitas tinggi
+                kepada seluruh mitra bisnis kami.
+            </p>
+            <ul class="check-list">
+                @foreach(['Distributor resmi & bersertifikat Unilever', 'Jangkauan distribusi seluruh Sumsel', 'Tim profesional berpengalaman', 'Armada pengiriman lengkap'] as $point)
+                <li>
+                    <div class="check-icon"><i class="fas fa-check" style="font-size:0.55rem;"></i></div>
+                    {{ $point }}
+                </li>
+                @endforeach
+            </ul>
+            <a href="/visi-misi" class="link-more">
+                Baca Visi & Misi Kami <i class="fas fa-arrow-right" style="font-size:0.75rem;"></i>
+            </a>
+        </div>
+ 
+        <div class="tentang-img-wrap">
+            <div class="tentang-img">
+                <img src="{{ asset('assets/images/produk1.jpg') }}"
+                     alt="Operasional CV. Sriwijaya Serangkai"
+                     loading="lazy"
+                     onload="this.classList.add('loaded')">
             </div>
-
-            <div class="relative">
-                <div class="rounded-3xl overflow-hidden shadow-2xl">
-                    {{-- PERBAIKAN: skeleton loading state untuk gambar --}}
-                    <div class="img-wrapper relative w-full h-[480px] bg-gray-200 rounded-3xl overflow-hidden">
-                        <div class="img-skeleton absolute inset-0 animate-pulse bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 bg-[length:200%_100%]"></div>
-                        <img src="{{ asset('assets/images/produk1.jpg') }}"
-                             alt="Gudang dan operasional CV. Sriwijaya Serangkai"
-                             loading="lazy"
-                             class="img-lazy w-full h-full object-cover opacity-0 transition-opacity duration-500">
-                    </div>
-                </div>
-                <div class="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl px-6 py-4 flex items-center gap-4">
-                    <div class="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center text-white text-xl">🏆</div>
-                    <div>
-                        <div class="font-bold text-gray-900 text-sm">Distributor Terpercaya</div>
-                        <div class="text-xs text-gray-500">Unilever Indonesia</div>
-                    </div>
+            <div class="tentang-badge">
+                <div class="tentang-badge-icon"><i class="fas fa-award"></i></div>
+                <div>
+                    <div class="tentang-badge-title">Distributor Terpercaya</div>
+                    <div class="tentang-badge-sub">Unilever Indonesia</div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-
-
+ 
 {{-- ===== KEUNGGULAN ===== --}}
-<section class="py-20 bg-gray-50">
-    <div class="max-w-7xl mx-auto px-6">
-        <div class="text-center mb-14">
-            <span class="inline-block bg-amber-50 text-amber-700 text-sm font-semibold px-5 py-2 rounded-full mb-4">Keunggulan Kami</span>
-            <h2 class="text-4xl font-extrabold text-gray-900">Mengapa Memilih Kami?</h2>
+<section class="unggulan-section">
+    <div class="unggulan-inner">
+        <div style="text-align:center;">
+            <p class="section-eyebrow">Mengapa Kami</p>
+            <h2 class="section-title">Keunggulan CV. Sriwijaya Serangkai</h2>
+            <div class="section-divider" style="margin:12px auto 0;"></div>
         </div>
-
-        <div class="grid md:grid-cols-3 gap-8">
-            @php
-            $keunggulan = [
-                ['icon' => '🚚', 'title' => 'Distribusi Cepat',        'desc' => 'Pengiriman tepat waktu dengan armada lengkap ke seluruh wilayah Palembang dan Sumatera Selatan.'],
-                ['icon' => '🏷️', 'title' => 'Harga Distributor',       'desc' => 'Harga terbaik langsung dari distributor resmi Unilever dengan volume fleksibel.'],
-                ['icon' => '✅', 'title' => 'Produk Terjamin',          'desc' => '100% original Unilever dengan sertifikat halal MUI dan garansi kualitas penuh.'],
-                ['icon' => '🤝', 'title' => 'Kemitraan Jangka Panjang','desc' => 'Program loyalitas dan dukungan penuh untuk mitra bisnis kami berkembang bersama.'],
-                ['icon' => '📦', 'title' => 'Stok Selalu Tersedia',     'desc' => 'Gudang kapasitas besar memastikan ketersediaan stok produk Unilever setiap saat.'],
-                ['icon' => '📞', 'title' => 'Layanan Pelanggan',        'desc' => 'Tim customer service siap membantu kebutuhan Anda setiap hari kerja.'],
-            ];
-            @endphp
-
+ 
+        @php
+        $keunggulan = [
+            ['icon' => 'fa-truck-fast',    'title' => 'Distribusi Cepat',         'desc' => 'Pengiriman tepat waktu dengan armada lengkap ke seluruh wilayah Palembang dan Sumatera Selatan.'],
+            ['icon' => 'fa-tags',          'title' => 'Harga Distributor',         'desc' => 'Harga terbaik langsung dari distributor resmi Unilever dengan volume fleksibel sesuai kebutuhan.'],
+            ['icon' => 'fa-certificate',   'title' => 'Produk Original',           'desc' => '100% asli Unilever dengan sertifikat halal MUI dan garansi kualitas terjamin.'],
+            ['icon' => 'fa-handshake',     'title' => 'Kemitraan Jangka Panjang',  'desc' => 'Program loyalitas dan dukungan penuh untuk mitra bisnis kami berkembang bersama.'],
+            ['icon' => 'fa-boxes-stacked', 'title' => 'Stok Selalu Tersedia',      'desc' => 'Gudang kapasitas besar memastikan ketersediaan stok produk Unilever setiap saat.'],
+            ['icon' => 'fa-headset',       'title' => 'Layanan Pelanggan',         'desc' => 'Tim customer service siap membantu kebutuhan Anda setiap hari kerja.'],
+        ];
+        @endphp
+ 
+        <div class="unggulan-grid">
             @foreach($keunggulan as $item)
-            <div class="bg-white p-8 rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 group border border-gray-100 hover:border-blue-100">
-                <div class="text-5xl mb-5 group-hover:scale-110 transition-transform duration-300 inline-block">
-                    {{ $item['icon'] }}
-                </div>
-                <h3 class="text-xl font-bold text-gray-900 mb-3">{{ $item['title'] }}</h3>
-                <p class="text-gray-500 text-sm leading-relaxed">{{ $item['desc'] }}</p>
+            <div class="unggulan-card">
+                <div class="unggulan-icon"><i class="fas {{ $item['icon'] }}"></i></div>
+                <div class="unggulan-title">{{ $item['title'] }}</div>
+                <p class="unggulan-desc">{{ $item['desc'] }}</p>
             </div>
             @endforeach
         </div>
     </div>
 </section>
-
-
-{{-- ===== CABANG PERUSAHAAN ===== --}}
-<section class="py-24 bg-white">
-    <div class="max-w-7xl mx-auto px-6">
-        <div class="text-center mb-14">
-            <span class="inline-block bg-blue-50 text-blue-700 text-sm font-semibold px-5 py-2 rounded-full mb-4">Lokasi Kami</span>
-            <h2 class="text-4xl font-extrabold text-gray-900 mb-3">Cabang Perusahaan</h2>
-            <p class="text-gray-500 max-w-md mx-auto">Hadir di lokasi strategis untuk melayani Anda lebih cepat dan lebih baik.</p>
+ 
+{{-- ===== CABANG ===== --}}
+<section class="cabang-section">
+    <div class="cabang-inner">
+        <div style="text-align:center;">
+            <p class="section-eyebrow">Lokasi Kami</p>
+            <h2 class="section-title">Cabang Perusahaan</h2>
+            <div class="section-divider" style="margin:12px auto 0;"></div>
+            <p style="color:#888;font-size:0.875rem;margin-top:12px;">Hadir di lokasi strategis untuk melayani Anda lebih cepat.</p>
         </div>
-
-        <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {{-- Palembang HQ --}}
-            <div class="group bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 border border-gray-100">
-                {{-- PERBAIKAN: skeleton loading untuk gambar cabang --}}
-                <div class="img-wrapper relative h-56 overflow-hidden bg-gray-200">
-                    <div class="img-skeleton absolute inset-0 animate-pulse bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 bg-[length:200%_100%]"></div>
-                    <img src="{{ asset('assets/images/palembang.jpg') }}"
-                         alt="Kantor cabang Sriwijaya Serangkai Prabumulih"
-                         loading="lazy"
-                         class="img-lazy w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:scale-105">
-                    <div class="absolute inset-0 bg-blue-900/20 group-hover:bg-blue-900/10 transition-all"></div>
+ 
+        <div class="cabang-grid">
+            <div class="cabang-card">
+                <div class="cabang-img">
+                    <img src="{{ asset('assets/images/prabumulih.jpeg') }}"
+                         alt="Kantor Prabumulih" loading="lazy"
+                         onload="this.classList.add('loaded')">
+                    <div class="cabang-img-overlay"></div>
+                    <div class="cabang-hq">HQ</div>
                 </div>
-                <div class="p-7">
-                    <div class="flex items-start justify-between gap-4 mb-4">
-                        <div>
-                            <h3 class="font-bold text-xl text-gray-900 mb-1">Sriwijaya Serangkai Prabumulih</h3>
-                            <p class="text-gray-500 text-sm leading-relaxed">Jalan Bangau, Kelurahan Tugu Kecil, Kecamatan Prabumulih Timur, Kota Prabumulih.</p>
-                        </div>
-                        <span class="flex-shrink-0 text-xs bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full font-semibold">HQ</span>
-                    </div>
-                    <div class="flex items-center gap-2 text-sm text-blue-600 font-medium">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-                        </svg>
-                        +62 811-777-9001
-                    </div>
+                <div class="cabang-body">
+                    <div class="cabang-name">Sriwijaya Serangkai Prabumulih</div>
+                    <p class="cabang-addr">Jalan Bangau No.229, RT04/RW.02, Kelurahan Tugu Kecil, Kec. Prabumulih Timur, Kota Prabumulih.</p>
+                    <div class="cabang-phone"><i class="fas fa-phone"></i> 0711-820700</div>
                 </div>
             </div>
-
-            {{-- Banyuasin Branch --}}
-            <div class="group bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 border border-gray-100">
-                {{-- PERBAIKAN: skeleton loading untuk gambar cabang --}}
-                <div class="img-wrapper relative h-56 overflow-hidden bg-gray-200">
-                    <div class="img-skeleton absolute inset-0 animate-pulse bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 bg-[length:200%_100%]"></div>
-                    <img src="{{ asset('assets/images/jakarta.jpg') }}"
-                         alt="Kantor cabang Sriwijaya Serangkai Banyuasin"
-                         loading="lazy"
-                         class="img-lazy w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:scale-105">
-                    <div class="absolute inset-0 bg-blue-900/20 group-hover:bg-blue-900/10 transition-all"></div>
+            <div class="cabang-card">
+                <div class="cabang-img">
+                    <img src="{{ asset('assets/images/banyuasin.jpg') }}"
+                         alt="Kantor Banyuasin" loading="lazy"
+                         onload="this.classList.add('loaded')">
+                    <div class="cabang-img-overlay"></div>
                 </div>
-                <div class="p-7">
-                    <div class="mb-4">
-                        <h3 class="font-bold text-xl text-gray-900 mb-1">Sriwijaya Serangkai Banyuasin</h3>
-                        <p class="text-gray-500 text-sm leading-relaxed">Gedung Sriwijaya, Jalan Palembang Betung, Sukaraja Baru, Kelurahan Sterio, Kecamatan Banyuasin III, Kabupaten Banyuasin, Sumatra Selatan.</p>
-                    </div>
-                    <div class="flex items-center gap-2 text-sm text-blue-600 font-medium">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-                        </svg>
-                        +62 21 555-6789
-                    </div>
+                <div class="cabang-body">
+                    <div class="cabang-name">Sriwijaya Serangkai Banyuasin</div>
+                    <p class="cabang-addr">Jalan Palembang Betung, Sukaraja Baru, Kel. Sterio, Kec. Banyuasin III, Kab. Banyuasin, Sumsel.</p>
+                    <div class="cabang-phone"><i class="fas fa-phone"></i> 0711-820700</div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-
 
 {{-- ===== KEGIATAN & AKTIVITAS ===== --}}
 <section class="py-24 bg-gray-50" id="kegiatan">
@@ -650,61 +835,49 @@
 </section>
 
 
-{{-- ===== CTA — PERBAIKAN: tambah WhatsApp shortcut ===== --}}
-<section class="relative bg-blue-900 text-white py-24 overflow-hidden">
-    <div class="absolute inset-0 opacity-5" style="background-image: url('{{ asset('assets/images/pattern.svg') }}')"></div>
-    <div class="absolute top-0 right-0 w-96 h-96 bg-blue-800 rounded-full blur-3xl opacity-50"></div>
-    <div class="absolute bottom-0 left-0 w-96 h-96 bg-blue-800 rounded-full blur-3xl opacity-50"></div>
-
-    <div class="relative max-w-4xl mx-auto px-6 text-center">
-        <span class="inline-block bg-white/10 text-white/80 text-sm font-semibold px-5 py-2 rounded-full mb-6">
-            Mulai Bermitra
-        </span>
-        <h2 class="text-4xl md:text-5xl font-extrabold mb-6 leading-tight">
-            Siap Bekerja Sama<br>dengan Kami?
-        </h2>
-        <p class="text-blue-200 text-lg mb-4 max-w-xl mx-auto leading-relaxed">
-            Hubungi kami untuk informasi harga distributor, katalog lengkap, dan program kemitraan eksklusif.
-        </p>
-
-        {{-- PERBAIKAN: Info kontak cepat sebelum tombol --}}
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-6 mb-10 text-sm text-blue-200">
-            <div class="flex items-center gap-2">
-                {{-- WhatsApp icon --}}
-                <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                </svg>
-                <span>+62 811-777-9001</span>
-            </div>
-            <span class="hidden sm:block text-blue-700">|</span>
-            <div class="flex items-center gap-2">
-                <svg class="w-5 h-5 text-blue-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                </svg>
-                <span>Hari kerja, 08.00 – 17.00 WIB</span>
-            </div>
+{{-- ===== CTA ===== --}}
+<section class="cta-section">
+    <div class="cta-inner">
+        <p class="cta-eyebrow">Mulai Bermitra</p>
+        <h2 class="cta-title">Siap Bekerja Sama <span>dengan Kami?</span></h2>
+        <p class="cta-desc">Hubungi kami untuk informasi harga distributor, katalog lengkap, dan program kemitraan eksklusif.</p>
+        <div class="cta-contacts">
+            <div class="cta-contact-item"><i class="fab fa-whatsapp"></i> +62 811-777-9001</div>
+            <div class="cta-contact-item"><i class="fas fa-clock"></i> Senin–Jumat, 08.00–17.00 WIB</div>
         </div>
-
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            {{-- PERBAIKAN: Tombol WhatsApp langsung --}}
-            <a href="https://wa.me/6281177790010?text=Halo%20CV.%20Sriwijaya%20Serangkai%2C%20saya%20ingin%20bertanya%20mengenai%20kemitraan%20distributor."
-               target="_blank"
-               rel="noopener noreferrer"
-               class="group inline-flex items-center justify-center gap-3 bg-emerald-500 hover:bg-emerald-400 text-white font-bold text-base px-10 py-4 rounded-2xl transition-all duration-300 shadow-xl shadow-emerald-900/30">
-                <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                </svg>
-                Chat WhatsApp
+        <div class="cta-btns">
+            <a href="https://wa.me/6281177790010?text=Halo%20CV.%20Sriwijaya%20Serangkai%2C%20saya%20ingin%20bertanya%20mengenai%20kemitraan."
+               target="_blank" class="btn-wa">
+                <i class="fab fa-whatsapp text-lg"></i> Chat WhatsApp
             </a>
-            <a href="/produk"
-               class="border-2 border-white/50 text-white hover:bg-white/10 font-bold text-base px-10 py-4 rounded-2xl transition-all duration-300">
-                Lihat Katalog
+            <a href="/produk" class="btn-catalog">
+                <i class="fas fa-box-open"></i> Lihat Katalog
             </a>
         </div>
     </div>
 </section>
-
+ 
 @endsection
+ 
+@push('scripts')
+<script>
+function filterKegiatan(category) {
+    document.querySelectorAll('.kfbtn').forEach(function(btn) {
+        btn.classList.toggle('active', btn.dataset.filter === category);
+    });
+    document.querySelectorAll('.kegiatan-card').forEach(function(card) {
+        var match = category === 'all' || card.dataset.category === category;
+        card.style.transition = 'opacity 0.25s, transform 0.25s';
+        if (match) {
+            card.style.opacity = '1'; card.style.transform = 'scale(1)'; card.style.display = '';
+        } else {
+            card.style.opacity = '0'; card.style.transform = 'scale(0.95)';
+            setTimeout(function() { if (card.style.opacity === '0') card.style.display = 'none'; }, 250);
+        }
+    });
+}
+</script>
+@endpush
 
 
 @push('scripts')

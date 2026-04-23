@@ -2,247 +2,380 @@
 
 @section('title', 'Produk Kami - CV. Sriwijaya Serangkai')
 
+@push('styles')
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+    :root {
+        --gold: #C9A84C;
+        --gold-light: #E8C97A;
+        --gold-pale: #FBF3E0;
+        --navy: #0D1B2A;
+        --navy-mid: #1B2E45;
+        --cream: #FDFAF4;
+    }
+
+    .prod-page { font-family: 'DM Sans', sans-serif; background: var(--cream); min-height: 100vh; }
+
+    /* ===== HERO ===== */
+    .prod-hero {
+        background: var(--navy); padding: 80px 24px 100px;
+        text-align: center; position: relative; overflow: hidden;
+    }
+    .prod-hero::before {
+        content: ''; position: absolute; inset: 0;
+        background: radial-gradient(ellipse at 20% 50%, rgba(201,168,76,0.12) 0%, transparent 55%),
+                    radial-gradient(ellipse at 80% 30%, rgba(201,168,76,0.08) 0%, transparent 55%);
+    }
+    .prod-hero::after {
+        content: ''; position: absolute; bottom: -1px; left: 0; right: 0;
+        height: 60px; background: var(--cream);
+        clip-path: ellipse(55% 100% at 50% 100%);
+    }
+    .hero-eyebrow {
+        display: inline-flex; align-items: center; gap: 10px;
+        color: var(--gold); font-size: 0.72rem; font-weight: 600;
+        letter-spacing: 4px; text-transform: uppercase;
+        margin-bottom: 18px; position: relative; z-index: 1;
+    }
+    .hero-eyebrow::before, .hero-eyebrow::after { content: ''; width: 36px; height: 1px; background: var(--gold); opacity: 0.5; }
+    .prod-hero h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 900;
+        color: white; line-height: 1.15; position: relative; z-index: 1; margin-bottom: 14px;
+    }
+    .prod-hero h1 span { color: var(--gold-light); font-style: italic; }
+    .prod-hero p { color: rgba(255,255,255,0.5); font-size: 0.95rem; position: relative; z-index: 1; }
+
+    /* Hero pills */
+    .hero-pills { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 24px; position: relative; z-index: 1; }
+    .hero-pill {
+        display: inline-flex; align-items: center; gap: 6px;
+        background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.3);
+        color: var(--gold-light); border-radius: 100px;
+        padding: 6px 16px; font-size: 0.78rem; font-weight: 500;
+    }
+
+    /* ===== CONTENT ===== */
+    .prod-content { max-width: 1100px; margin: 0 auto; padding: 56px 24px 80px; }
+
+    /* ===== STATS ===== */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 56px; }
+    .stat-card {
+        background: white; border-radius: 18px;
+        border: 1.5px solid rgba(201,168,76,0.12);
+        padding: 24px 16px; text-align: center;
+        box-shadow: 0 3px 16px rgba(0,0,0,0.05);
+    }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; color: var(--navy); line-height: 1; }
+    .stat-num span { color: var(--gold); }
+    .stat-lbl { font-size: 0.75rem; color: #888; margin-top: 6px; }
+
+    /* ===== SECTION LABEL ===== */
+    .section-label { margin-bottom: 28px; }
+    .section-label .eyebrow { font-size: 0.7rem; font-weight: 600; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+    .section-label h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; color: var(--navy); }
+    .section-divider { width: 48px; height: 3px; margin-top: 12px; background: linear-gradient(to right, var(--gold), rgba(201,168,76,0.3)); border-radius: 2px; }
+
+    /* ===== KEUNGGULAN ===== */
+    .unggulan-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 56px; }
+    .unggulan-card {
+        background: white; border-radius: 18px;
+        border: 1.5px solid rgba(201,168,76,0.1);
+        padding: 28px 22px; text-align: center;
+        transition: all 0.25s; box-shadow: 0 3px 16px rgba(0,0,0,0.05);
+    }
+    .unggulan-card:hover { transform: translateY(-4px); border-color: rgba(201,168,76,0.4); box-shadow: 0 12px 36px rgba(201,168,76,0.12); }
+    .unggulan-icon { width: 56px; height: 56px; border-radius: 16px; background: var(--gold-pale); color: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin: 0 auto 16px; }
+    .unggulan-title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+    .unggulan-desc { font-size: 0.82rem; color: #666; line-height: 1.7; }
+
+    /* ===== FILTER ===== */
+    .filter-wrap { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+    .filter-btn {
+        padding: 7px 18px; border-radius: 100px; font-size: 0.8rem; font-weight: 500;
+        border: 1.5px solid rgba(201,168,76,0.2); background: white; color: #555;
+        cursor: pointer; transition: all 0.2s;
+    }
+    .filter-btn:hover { border-color: var(--gold); color: var(--navy); }
+    .filter-btn.active { background: var(--navy); color: white; border-color: var(--navy); }
+
+    /* ===== PRODUCT GRID ===== */
+    .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 56px; }
+    .product-card {
+        background: white; border-radius: 18px; overflow: hidden;
+        border: 1.5px solid rgba(201,168,76,0.1);
+        box-shadow: 0 3px 16px rgba(0,0,0,0.05);
+        transition: all 0.25s; display: flex; flex-direction: column;
+    }
+    .product-card:hover { transform: translateY(-5px); box-shadow: 0 14px 40px rgba(201,168,76,0.15); border-color: rgba(201,168,76,0.35); }
+
+    .product-img {
+        height: 180px; background: #f8f5f0; overflow: hidden; position: relative;
+    }
+    .product-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+    .product-card:hover .product-img img { transform: scale(1.06); }
+
+    .cat-badge {
+        position: absolute; top: 10px; left: 10px;
+        font-size: 0.62rem; font-weight: 700; letter-spacing: 1px;
+        text-transform: uppercase; padding: 3px 10px; border-radius: 100px;
+    }
+    .product-body { padding: 18px 16px; flex: 1; display: flex; flex-direction: column; }
+    .product-name { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+    .product-desc { font-size: 0.78rem; color: #777; line-height: 1.65; flex: 1; }
+    .product-footer { margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(201,168,76,0.1); display: flex; align-items: center; justify-content: space-between; }
+    .halal-badge { font-size: 0.68rem; color: #888; display: flex; align-items: center; gap: 4px; }
+    .order-link { font-size: 0.72rem; font-weight: 600; color: var(--gold); text-decoration: none; display: flex; align-items: center; gap: 4px; transition: color 0.2s; }
+    .order-link:hover { color: var(--navy); }
+
+    /* ===== CTA ===== */
+    .cta-box {
+        background: var(--navy); border-radius: 24px; padding: 56px 40px;
+        text-align: center; position: relative; overflow: hidden; margin-bottom: 56px;
+    }
+    .cta-box::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(201,168,76,0.1) 0%, transparent 70%); }
+    .cta-box * { position: relative; z-index: 1; }
+    .cta-eyebrow { font-size: 0.7rem; font-weight: 600; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+    .cta-box h3 { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; color: white; margin-bottom: 10px; }
+    .cta-box h3 span { color: var(--gold-light); font-style: italic; }
+    .cta-box p { color: rgba(255,255,255,0.5); margin-bottom: 28px; font-size: 0.9rem; max-width: 500px; margin-left: auto; margin-right: auto; }
+    .btn-wa {
+        display: inline-flex; align-items: center; gap: 10px;
+        background: #22c55e; color: white;
+        padding: 14px 32px; border-radius: 100px;
+        font-weight: 700; font-size: 0.9rem; text-decoration: none;
+        transition: all 0.2s; box-shadow: 0 4px 20px rgba(34,197,94,0.3);
+    }
+    .btn-wa:hover { background: #16a34a; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(34,197,94,0.4); }
+
+    /* ===== FAQ ===== */
+    .faq-item { background: white; border-radius: 16px; border: 1.5px solid rgba(201,168,76,0.1); overflow: hidden; margin-bottom: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+    .faq-btn {
+        width: 100%; display: flex; align-items: center; justify-content: space-between;
+        padding: 20px 24px; text-align: left; background: none; border: none;
+        font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 600;
+        color: var(--navy); cursor: pointer; transition: color 0.2s;
+    }
+    .faq-btn:hover { color: var(--gold); }
+    .faq-icon { width: 26px; height: 26px; border-radius: 50%; background: var(--gold-pale); color: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; transition: transform 0.3s; }
+    .faq-icon.open { transform: rotate(45deg); }
+    .faq-body { padding: 0 24px 20px; font-size: 0.85rem; color: #666; line-height: 1.75; border-top: 1px solid rgba(201,168,76,0.08); padding-top: 16px; display: none; }
+    .faq-body.open { display: block; }
+
+    @media (max-width: 1024px) { .product-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 768px) {
+        .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        .unggulan-grid { grid-template-columns: 1fr; }
+        .product-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) { .product-grid { grid-template-columns: 1fr; } }
+</style>
+@endpush
+
 @section('content')
+<div class="prod-page">
 
-<!-- Hero Produk -->
-<section class="relative bg-gradient-to-br from-blue-800 via-blue-700 to-indigo-900 text-white py-32 overflow-hidden">
-    <!-- Decorative blobs -->
-    <div class="absolute top-0 left-0 w-72 h-72 bg-blue-500 opacity-20 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
-    <div class="absolute bottom-0 right-0 w-96 h-96 bg-indigo-500 opacity-20 rounded-full translate-x-1/3 translate-y-1/3 blur-3xl"></div>
-
-    <div class="relative max-w-7xl mx-auto px-6 text-center">
-        <span class="inline-block bg-white/10 backdrop-blur border border-white/20 text-sm font-medium px-4 py-1.5 rounded-full mb-6 tracking-wide">
-            🏆 Distributor Resmi Unilever
-        </span>
-        <h1 class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight tracking-tight">
-            Produk <span class="text-emerald-400">Unggulan</span> Kami
-        </h1>
-        <p class="mt-4 max-w-2xl mx-auto text-lg text-blue-100 leading-relaxed">
-            Rangkaian lengkap produk Unilever berkualitas tinggi — tersedia dengan harga distributor
-            langsung untuk kebutuhan usaha Anda.
-        </p>
-        <div class="mt-10 flex flex-wrap justify-center gap-4 text-sm font-medium">
-            <span class="bg-white/15 backdrop-blur px-5 py-2 rounded-full border border-white/20">✅ Produk Original</span>
-            <span class="bg-white/15 backdrop-blur px-5 py-2 rounded-full border border-white/20">🚚 Pengiriman Cepat</span>
-            <span class="bg-white/15 backdrop-blur px-5 py-2 rounded-full border border-white/20">💰 Harga Terbaik</span>
+    {{-- Hero --}}
+    <div class="prod-hero">
+        <div class="hero-eyebrow"><span></span>Distributor Resmi Unilever<span></span></div>
+        <h1>Produk <span>Unggulan</span> Kami</h1>
+        <p>Rangkaian lengkap produk Unilever berkualitas tinggi untuk kebutuhan usaha Anda</p>
+        <div class="hero-pills">
+            <div class="hero-pill"><i class="fas fa-check-circle"></i> Produk Original</div>
+            <div class="hero-pill"><i class="fas fa-truck"></i> Pengiriman Cepat</div>
+            <div class="hero-pill"><i class="fas fa-tag"></i> Harga Distributor</div>
         </div>
     </div>
-</section>
 
-<div class="max-w-7xl mx-auto px-6 py-20">
+    <div class="prod-content">
 
-    <!-- Stats Bar -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-24 -mt-12 relative z-10">
-        @foreach([
-            ['num' => '12+', 'label' => 'Brand Unilever'],
-            ['num' => '100%', 'label' => 'Produk Original'],
-            ['num' => 'Rp 100rb', 'label' => 'Min. Order'],
-            ['num' => 'Se-Sumsel', 'label' => 'Jangkauan Distribusi'],
-        ] as $s)
-        <div class="bg-white rounded-2xl shadow-lg p-6 text-center border border-gray-100">
-            <p class="text-3xl font-extrabold text-blue-700">{{ $s['num'] }}</p>
-            <p class="text-sm text-gray-500 mt-1 font-medium">{{ $s['label'] }}</p>
-        </div>
-        @endforeach
-    </div>
-
-    <!-- Keunggulan -->
-    <div class="mb-24">
-        <div class="text-center mb-12">
-            <span class="text-emerald-600 font-semibold text-sm uppercase tracking-widest">Mengapa Kami?</span>
-            <h2 class="text-4xl font-bold mt-2 text-gray-800">Keunggulan CV. Sriwijaya Serangkai</h2>
-        </div>
-        <div class="grid md:grid-cols-3 gap-8">
-            @foreach([
-                ['icon' => '✅', 'title' => 'Produk Original', 'desc' => '100% asli Unilever dengan garansi resmi dan sertifikat halal MUI — terjamin keasliannya.', 'color' => 'from-emerald-50 to-green-100', 'border' => 'border-emerald-200'],
-                ['icon' => '🚚', 'title' => 'Pengiriman Cepat', 'desc' => 'Distribusi tepat waktu ke seluruh Palembang dan Sumatera Selatan oleh armada kami.', 'color' => 'from-blue-50 to-indigo-100', 'border' => 'border-blue-200'],
-                ['icon' => '💰', 'title' => 'Harga Distributor', 'desc' => 'Dapatkan harga terbaik langsung dari distributor resmi Unilever tanpa perantara.', 'color' => 'from-amber-50 to-yellow-100', 'border' => 'border-amber-200'],
-            ] as $k)
-            <div class="bg-gradient-to-br {{ $k['color'] }} border {{ $k['border'] }} p-10 rounded-3xl hover:shadow-xl transition-all duration-300 text-center group">
-                <div class="text-6xl mb-5 group-hover:scale-110 transition-transform duration-300 inline-block">{{ $k['icon'] }}</div>
-                <h3 class="font-bold text-xl mb-3 text-gray-800">{{ $k['title'] }}</h3>
-                <p class="text-gray-600 leading-relaxed text-sm">{{ $k['desc'] }}</p>
+        {{-- Stats --}}
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-num">12<span>+</span></div>
+                <div class="stat-lbl">Brand Unilever</div>
             </div>
-            @endforeach
+            <div class="stat-card">
+                <div class="stat-num">100<span>%</span></div>
+                <div class="stat-lbl">Produk Original</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num">100<span>rb</span></div>
+                <div class="stat-lbl">Min. Order</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num">Se<span>-Sumsel</span></div>
+                <div class="stat-lbl">Jangkauan Distribusi</div>
+            </div>
         </div>
-    </div>
 
-    <!-- Filter Kategori -->
-    <div class="mb-12 text-center">
-        <span class="text-emerald-600 font-semibold text-sm uppercase tracking-widest">Katalog</span>
-        <h2 class="text-4xl font-bold mt-2 mb-8 text-gray-800">Produk Kami</h2>
+        {{-- Keunggulan --}}
+        <div class="section-label">
+            <p class="eyebrow">Mengapa Kami</p>
+            <h2>Keunggulan Kami</h2>
+            <div class="section-divider"></div>
+        </div>
+        <div class="unggulan-grid">
+            <div class="unggulan-card">
+                <div class="unggulan-icon"><i class="fas fa-certificate"></i></div>
+                <div class="unggulan-title">Produk Original</div>
+                <p class="unggulan-desc">100% asli Unilever dengan garansi resmi dan sertifikat halal MUI — terjamin keasliannya.</p>
+            </div>
+            <div class="unggulan-card">
+                <div class="unggulan-icon"><i class="fas fa-truck-fast"></i></div>
+                <div class="unggulan-title">Pengiriman Cepat</div>
+                <p class="unggulan-desc">Distribusi tepat waktu ke seluruh Palembang dan Sumatera Selatan oleh armada kami sendiri.</p>
+            </div>
+            <div class="unggulan-card">
+                <div class="unggulan-icon"><i class="fas fa-tags"></i></div>
+                <div class="unggulan-title">Harga Distributor</div>
+                <p class="unggulan-desc">Dapatkan harga terbaik langsung dari distributor resmi Unilever tanpa perantara tambahan.</p>
+            </div>
+        </div>
 
-        <div class="flex flex-wrap justify-center gap-3" id="filter-buttons">
+        {{-- Katalog --}}
+        <div class="section-label">
+            <p class="eyebrow">Katalog</p>
+            <h2>Produk Kami</h2>
+            <div class="section-divider"></div>
+        </div>
+
+        {{-- Filter --}}
+        <div class="filter-wrap" id="filterWrap">
             @foreach(['Semua', 'Personal Care', 'Home Care', 'Hair Care', 'Oral Care', 'Skin Care', 'Foods', 'Beverages'] as $cat)
-            <button
-                onclick="filterProducts('{{ $cat }}')"
-                data-cat="{{ $cat }}"
-                class="filter-btn px-5 py-2 rounded-full border text-sm font-medium transition-all duration-200
-                    {{ $cat === 'Semua' ? 'bg-blue-700 text-white border-blue-700' : 'bg-white text-gray-600 border-gray-200 hover:border-blue-400 hover:text-blue-700' }}">
+            <button class="filter-btn {{ $cat === 'Semua' ? 'active' : '' }}"
+                    onclick="filterProducts('{{ $cat }}', this)">
                 {{ $cat }}
             </button>
             @endforeach
         </div>
-    </div>
-
-    <!-- Grid Produk -->
-    <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-7" id="product-grid">
-
-        @foreach([
-            ['img' => 'dove.png',          'name' => 'Dove',          'cat' => 'Personal Care', 'desc' => 'Sabun mandi, shampoo, dan body care dengan kelembapan tinggi'],
-            ['img' => 'lifebuoy.png',       'name' => 'Lifebuoy',      'cat' => 'Personal Care', 'desc' => 'Sabun mandi antibakteri dengan perlindungan 99.9% kuman'],
-            ['img' => 'rinso.png',          'name' => 'Rinso',         'cat' => 'Home Care',     'desc' => 'Deterjen dengan kekuatan membersihkan noda yang sangat baik'],
-            ['img' => 'pepsodent.png',      'name' => 'Pepsodent',     'cat' => 'Oral Care',     'desc' => 'Pasta gigi dengan perlindungan gigi berlubang dan napas segar'],
-            ['img' => 'sunlight.png',       'name' => 'Sunlight',      'cat' => 'Home Care',     'desc' => 'Sabun cuci piring dengan kekuatan membersihkan lemak maksimal'],
-            ['img' => 'axe.png',            'name' => 'Axe',           'cat' => 'Personal Care', 'desc' => 'Body spray & deodorant pria dengan aroma maskulin'],
-            ['img' => 'bango.png',          'name' => 'Bango',         'cat' => 'Foods',         'desc' => 'Kecap manis premium dari kedelai pilihan'],
-            ['img' => 'buavita.png',        'name' => 'Buavita',       'cat' => 'Beverages',     'desc' => 'Minuman buah segar dengan nutrisi lengkap'],
-            ['img' => 'clear.png',          'name' => 'Clear',         'cat' => 'Hair Care',     'desc' => 'Sampo anti-ketombe nomor satu di Indonesia'],
-            ['img' => 'glow & lovely.png',  'name' => 'Glow & Lovely', 'cat' => 'Skin Care',     'desc' => 'Perawatan kulit dengan multivitamin dan glow serum'],
-            ['img' => 'closeup.png',        'name' => 'Closeup',       'cat' => 'Oral Care',     'desc' => 'Pasta gigi dengan perlindungan napas segar hingga 12 jam'],
-            ['img' => 'wipol.png',          'name' => 'Wipol',         'cat' => 'Home Care',     'desc' => 'Pembersih lantai dengan aroma cemara yang segar'],
-        ] as $p)
 
         @php
-            $catColors = [
-                'Personal Care' => 'bg-pink-100 text-pink-700',
-                'Home Care'     => 'bg-blue-100 text-blue-700',
-                'Hair Care'     => 'bg-purple-100 text-purple-700',
-                'Oral Care'     => 'bg-cyan-100 text-cyan-700',
-                'Skin Care'     => 'bg-rose-100 text-rose-700',
-                'Foods'         => 'bg-orange-100 text-orange-700',
-                'Beverages'     => 'bg-green-100 text-green-700',
-            ];
-            $badgeClass = $catColors[$p['cat']] ?? 'bg-gray-100 text-gray-600';
+        $products = [
+            ['img' => 'dove.png',         'name' => 'Dove',          'cat' => 'Personal Care', 'desc' => 'Sabun mandi, shampoo, dan body care dengan kelembapan tinggi'],
+            ['img' => 'lifebuoy.png',      'name' => 'Lifebuoy',      'cat' => 'Personal Care', 'desc' => 'Sabun mandi antibakteri dengan perlindungan 99.9% kuman'],
+            ['img' => 'rinso.png',         'name' => 'Rinso',         'cat' => 'Home Care',     'desc' => 'Deterjen dengan kekuatan membersihkan noda yang sangat baik'],
+            ['img' => 'pepsodent.png',     'name' => 'Pepsodent',     'cat' => 'Oral Care',     'desc' => 'Pasta gigi dengan perlindungan gigi berlubang dan napas segar'],
+            ['img' => 'sunlight.png',      'name' => 'Sunlight',      'cat' => 'Home Care',     'desc' => 'Sabun cuci piring dengan kekuatan membersihkan lemak maksimal'],
+            ['img' => 'axe.png',           'name' => 'Axe',           'cat' => 'Personal Care', 'desc' => 'Body spray & deodorant pria dengan aroma maskulin'],
+            ['img' => 'bango.png',         'name' => 'Bango',         'cat' => 'Foods',         'desc' => 'Kecap manis premium dari kedelai pilihan'],
+            ['img' => 'buavita.png',       'name' => 'Buavita',       'cat' => 'Beverages',     'desc' => 'Minuman buah segar dengan nutrisi lengkap'],
+            ['img' => 'clear.png',         'name' => 'Clear',         'cat' => 'Hair Care',     'desc' => 'Sampo anti-ketombe nomor satu di Indonesia'],
+            ['img' => 'glow & lovely.png',   'name' => 'Glow & Lovely', 'cat' => 'Skin Care',     'desc' => 'Perawatan kulit dengan multivitamin dan glow serum'],
+            ['img' => 'closeup.png',       'name' => 'Closeup',       'cat' => 'Oral Care',     'desc' => 'Pasta gigi dengan perlindungan napas segar hingga 12 jam'],
+            ['img' => 'wipol.png',         'name' => 'Wipol',         'cat' => 'Home Care',     'desc' => 'Pembersih lantai dengan aroma cemara yang segar'],
+        ];
+
+        $catBadge = [
+            'Personal Care' => 'background:#fdf2f8;color:#9d174d;',
+            'Home Care'     => 'background:#eff6ff;color:#1e40af;',
+            'Hair Care'     => 'background:#f5f3ff;color:#5b21b6;',
+            'Oral Care'     => 'background:#ecfeff;color:#155e75;',
+            'Skin Care'     => 'background:#fff1f2;color:#9f1239;',
+            'Foods'         => 'background:#fff7ed;color:#9a3412;',
+            'Beverages'     => 'background:#f0fdf4;color:#166534;',
+        ];
         @endphp
 
-        <div class="product-card bg-white rounded-3xl overflow-hidden shadow hover:shadow-2xl transition-all duration-300 group flex flex-col"
-             data-cat="{{ $p['cat'] }}">
-            <!-- Image -->
-            <div class="relative h-52 bg-gray-50 overflow-hidden">
-                <img src="{{ asset('assets/images/' . $p['img']) }}"
-                     alt="{{ $p['name'] }}"
-                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                <!-- Badge overlay -->
-                <span class="absolute top-3 left-3 text-xs font-semibold px-3 py-1 rounded-full {{ $badgeClass }}">
-                    {{ $p['cat'] }}
-                </span>
-            </div>
-            <!-- Content -->
-            <div class="p-6 flex flex-col flex-1">
-                <h3 class="font-bold text-xl text-gray-800 mb-2">{{ $p['name'] }}</h3>
-                <p class="text-gray-500 text-sm leading-relaxed flex-1">{{ $p['desc'] }}</p>
-                <div class="mt-5 pt-4 border-t border-gray-100 flex items-center justify-between">
-                    <span class="text-xs text-gray-400 font-medium">✅ Halal MUI</span>
-                    <a href="#contact"
-                       class="text-xs font-semibold text-blue-700 hover:text-blue-900 transition flex items-center gap-1">
-                        Order Sekarang →
-                    </a>
+        <div class="product-grid" id="productGrid">
+            @foreach($products as $p)
+            <div class="product-card" data-cat="{{ $p['cat'] }}">
+                <div class="product-img">
+                    <img src="{{ asset('assets/images/' . $p['img']) }}" alt="{{ $p['name'] }}" loading="lazy">
+                    <span class="cat-badge" style="{{ $catBadge[$p['cat']] ?? '' }}">{{ $p['cat'] }}</span>
                 </div>
-            </div>
-        </div>
-
-        @endforeach
-    </div>
-
-    <!-- CTA Banner -->
-    <div class="mt-24 bg-gradient-to-r from-blue-700 to-indigo-800 rounded-3xl p-12 text-white text-center relative overflow-hidden">
-        <div class="absolute inset-0 bg-[url('/assets/images/pattern.svg')] opacity-10"></div>
-        <div class="relative">
-            <h2 class="text-3xl md:text-4xl font-bold mb-4">Tertarik Menjadi Mitra Kami?</h2>
-            <p class="text-blue-100 max-w-xl mx-auto mb-8">
-                Hubungi tim kami sekarang dan dapatkan penawaran harga distributor terbaik untuk toko Anda.
-            </p>
-            <a href="https://wa.me/6282281877406"
-               class="inline-block bg-emerald-400 hover:bg-emerald-300 text-white font-bold px-10 py-4 rounded-full transition-all duration-200 shadow-lg hover:shadow-emerald-400/40 hover:-translate-y-0.5">
-                💬 Hubungi Kami via WhatsApp
-            </a>
-        </div>
-    </div>
-
-    <!-- FAQ -->
-    <div class="mt-28" x-data="{ open: null }">
-        <div class="text-center mb-14">
-            <span class="text-emerald-600 font-semibold text-sm uppercase tracking-widest">FAQ</span>
-            <h2 class="text-4xl font-bold mt-2 text-gray-800">Pertanyaan yang Sering Diajukan</h2>
-        </div>
-
-        <div class="max-w-3xl mx-auto space-y-4">
-            @foreach([
-                [
-                    'q' => 'Bagaimana cara toko baru untuk order ke CV. Sriwijaya Serangkai?',
-                    'a' => 'Toko dapat menghubungi nomor telepon atau WhatsApp yang tertera. Supervisor atau sales kami akan mengunjungi toko Anda untuk melakukan survei dan pengumpulan data pemilik toko.'
-                ],
-                [
-                    'q' => 'Apakah semua produk memiliki sertifikat halal?',
-                    'a' => 'Ya, semua produk Unilever yang kami distribusikan telah memiliki sertifikasi halal dari MUI.'
-                ],
-                [
-                    'q' => 'Berapa nilai minimum belanja untuk setiap toko?',
-                    'a' => 'Nilai minimum pembelanjaan untuk setiap pesanan toko adalah Rp 100.000,-.'
-                ],
-                [
-                    'q' => 'Area mana saja yang dilayani pengiriman?',
-                    'a' => 'Kami melayani distribusi ke seluruh wilayah Palembang dan Sumatera Selatan dengan armada pengiriman sendiri.'
-                ],
-            ] as $i => $faq)
-            <div class="bg-white rounded-2xl shadow border border-gray-100 overflow-hidden"
-                 x-data="{ open: false }">
-                <button
-                    @click="open = !open"
-                    class="w-full flex items-center justify-between px-8 py-6 text-left font-semibold text-gray-800 hover:text-blue-700 transition">
-                    <span>{{ $faq['q'] }}</span>
-                    <span class="ml-4 text-xl transition-transform duration-300"
-                          :class="open ? 'rotate-45' : 'rotate-0'">+</span>
-                </button>
-                <div x-show="open"
-                     x-transition:enter="transition ease-out duration-200"
-                     x-transition:enter-start="opacity-0 -translate-y-2"
-                     x-transition:enter-end="opacity-100 translate-y-0"
-                     class="px-8 pb-7 text-gray-600 leading-relaxed text-sm border-t border-gray-100 pt-5">
-                    {{ $faq['a'] }}
+                <div class="product-body">
+                    <div class="product-name">{{ $p['name'] }}</div>
+                    <p class="product-desc">{{ $p['desc'] }}</p>
+                    <div class="product-footer">
+                        <div class="halal-badge"><i class="fas fa-check-circle" style="color:#22c55e;"></i> Halal MUI</div>
+                        <a href="https://wa.me/6282281877406" class="order-link" target="_blank">
+                            Order <i class="fas fa-arrow-right" style="font-size:0.6rem;"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
             @endforeach
         </div>
-    </div>
 
+        {{-- CTA --}}
+        <div class="cta-box">
+            <p class="cta-eyebrow">Kemitraan</p>
+            <h3>Tertarik Menjadi <span>Mitra Kami?</span></h3>
+            <p>Hubungi tim kami sekarang dan dapatkan penawaran harga distributor terbaik untuk toko Anda.</p>
+            <a href="https://wa.me/6282281877406" class="btn-wa" target="_blank">
+                <i class="fab fa-whatsapp text-xl"></i> Hubungi via WhatsApp
+            </a>
+        </div>
+
+        {{-- FAQ --}}
+        <div class="section-label">
+            <p class="eyebrow">FAQ</p>
+            <h2>Pertanyaan Umum</h2>
+            <div class="section-divider"></div>
+        </div>
+
+        @php
+        $faqs = [
+            ['q' => 'Bagaimana cara toko baru untuk order ke CV. Sriwijaya Serangkai?', 'a' => 'Toko dapat menghubungi nomor telepon atau WhatsApp yang tertera. Supervisor atau sales kami akan mengunjungi toko Anda untuk melakukan survei dan pengumpulan data pemilik toko.'],
+            ['q' => 'Apakah semua produk memiliki sertifikat halal?', 'a' => 'Ya, semua produk Unilever yang kami distribusikan telah memiliki sertifikasi halal dari MUI.'],
+            ['q' => 'Berapa nilai minimum belanja untuk setiap toko?', 'a' => 'Nilai minimum pembelanjaan untuk setiap pesanan toko adalah Rp 100.000,-'],
+            ['q' => 'Area mana saja yang dilayani pengiriman?', 'a' => 'Kami melayani distribusi ke seluruh wilayah Palembang dan Sumatera Selatan dengan armada pengiriman sendiri.'],
+        ];
+        @endphp
+
+        <div id="faqWrap">
+            @foreach($faqs as $i => $faq)
+            <div class="faq-item">
+                <button class="faq-btn" onclick="toggleFaq({{ $i }})">
+                    <span>{{ $faq['q'] }}</span>
+                    <div class="faq-icon" id="faq-icon-{{ $i }}">+</div>
+                </button>
+                <div class="faq-body" id="faq-body-{{ $i }}">{{ $faq['a'] }}</div>
+            </div>
+            @endforeach
+        </div>
+
+    </div>
 </div>
 
-<!-- Filter Script -->
+@push('scripts')
 <script>
-function filterProducts(cat) {
-    const cards = document.querySelectorAll('.product-card');
-    const buttons = document.querySelectorAll('.filter-btn');
+    function filterProducts(cat, btn) {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
 
-    buttons.forEach(btn => {
-        const active = btn.dataset.cat === cat;
-        btn.classList.toggle('bg-blue-700', active);
-        btn.classList.toggle('text-white', active);
-        btn.classList.toggle('border-blue-700', active);
-        btn.classList.toggle('bg-white', !active);
-        btn.classList.toggle('text-gray-600', !active);
-        btn.classList.toggle('border-gray-200', !active);
-    });
+        document.querySelectorAll('.product-card').forEach(card => {
+            const match = cat === 'Semua' || card.dataset.cat === cat;
+            card.style.transition = 'opacity 0.25s, transform 0.25s';
+            if (match) {
+                card.style.opacity = '1';
+                card.style.transform = 'scale(1)';
+                card.style.display = 'flex';
+            } else {
+                card.style.opacity = '0';
+                card.style.transform = 'scale(0.95)';
+                setTimeout(() => { if (!match) card.style.display = 'none'; }, 250);
+            }
+        });
+    }
 
-    cards.forEach(card => {
-        const match = cat === 'Semua' || card.dataset.cat === cat;
-        card.style.transition = 'opacity 0.3s, transform 0.3s';
-        if (match) {
-            card.style.opacity = '1';
-            card.style.transform = 'scale(1)';
-            card.style.display = 'flex';
-        } else {
-            card.style.opacity = '0';
-            card.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                if (card.dataset.cat !== cat && cat !== 'Semua') {
-                    card.style.display = 'none';
-                }
-            }, 300);
+    function toggleFaq(i) {
+        const body = document.getElementById('faq-body-' + i);
+        const icon = document.getElementById('faq-icon-' + i);
+        const isOpen = body.classList.contains('open');
+        // tutup semua
+        document.querySelectorAll('.faq-body').forEach(b => b.classList.remove('open'));
+        document.querySelectorAll('.faq-icon').forEach(ic => { ic.classList.remove('open'); ic.textContent = '+'; });
+        // buka yang diklik jika belum open
+        if (!isOpen) {
+            body.classList.add('open');
+            icon.classList.add('open');
+            icon.textContent = '+';
         }
-    });
-}
+    }
 </script>
+@endpush
 
 @endsection

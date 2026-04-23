@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Storage;
 
 class JobApplicationController extends Controller
 {
+    /**
+     * Simpan lamaran dari pelamar (Publik)
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -32,25 +35,9 @@ class JobApplicationController extends Controller
             'experience' => $request->experience,
             'message'    => $request->message,
             'cv_path'    => $cvPath,
+            'status'     => 'pending',
         ]);
 
         return redirect()->back()->with('success', 'Lamaran Anda berhasil dikirim! Terima kasih.');
-    }
-
-        /**
-     * Hapus data pelamar
-     */
-    public function destroy(JobApplication $jobApplication)
-    {
-        // Hapus file CV jika ada
-        if ($jobApplication->cv_path && Storage::disk('public')->exists($jobApplication->cv_path)) {
-            Storage::disk('public')->delete($jobApplication->cv_path);
-        }
-
-        // Hapus data pelamar
-        $jobApplication->delete();
-
-        return redirect()->route('admin.jobs.index')
-                         ->with('success', 'Data pelamar berhasil dihapus.');
     }
 }
